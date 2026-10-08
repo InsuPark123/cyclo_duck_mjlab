@@ -24,9 +24,10 @@ The repository currently provides:
 > [!IMPORTANT]
 > This repository currently uses MJLab 1.3.0, MuJoCo 3.10.0, and Python 3.12.
 
-Cyclo Duck MJCF assets are available, but its walking task and 14-joint BAM
-integration are not yet connected. See the [single-joint BAM validation report](docs/bam_single_joint_validation.md)
-for the aligned runtime, measured results and the known upstream M6 friction difference.
+Cyclo Duck MJCF assets and a [14-joint BAM configuration](source/assets/robots/cyclo_duck/README.md)
+are available; its walking task is not yet registered. See the
+[single-joint BAM validation report](docs/bam_single_joint_validation.md) for
+the aligned runtime, measured results and the known upstream M6 friction difference.
 
 ### Locomotion
 

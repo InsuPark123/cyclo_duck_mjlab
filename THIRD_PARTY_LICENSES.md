@@ -16,6 +16,10 @@
 - See `source/assets/robots/cyclo_duck/README.md` for transformations, source
   paths and the distinction between reference contact geometry
   and Cyclo visual geometry.
+- The MJLab robot configuration in `source/assets/robots/cyclo_duck/cyclo_duck.py`
+  and friction-scaling/event integration in `source/actuators/bam.py` adapt MD
+  `robot/microduck_constants.py`, `actuator/friction_dr_bam.py` and `tasks/mdp.py`
+  at the same revision, under Apache-2.0, Copyright 2026 Pollen Robotics.
 
 This project uses third-party open-source software and includes code adapted
 from third-party open-source projects.

@@ -11,9 +11,11 @@ friction calculation check exposed an upstream CPU/GPU M6 formula difference;
 full numerical equivalence is **not** established. The upstream implementation
 is unchanged so that subsequent MD task migration retains its behavior.
 
-This stage does not connect BAM to the 14-joint Cyclo Duck robot or add a
+This single-joint stage did not connect BAM to the 14-joint Cyclo Duck robot or add a
 walking task. It does not identify motor parameters from physical hardware.
-The robot MJCF still has its existing position actuators.
+The robot MJCF still has its existing position actuators. Subsequent runtime
+BAM integration is documented in `source/assets/robots/cyclo_duck/README.md`;
+that integration converts the actuators in memory without changing the XML.
 
 ## Pinned sources and environment
 

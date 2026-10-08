@@ -4,6 +4,8 @@ Changelog for package cyclo_duck_mjlab
 
 Unreleased
 ----------
+* Added a fourteen-joint Cyclo Duck BAM M6 asset configuration with MD voltage, delay, HOME pose and soft-limit settings.
+* Adapted MD friction scaling and startup/reset events for independent parallel-world friction updates.
 * Aligned the simulation environment with the MD reference: Python 3.12, MJLab 1.3.0, MuJoCo 3.10.0, MuJoCo Warp 3.8.1, Warp 1.12.0, PyTorch 2.9.1 and RSL-RL 5.0.1.
 * Added the pinned BAM XL330 M6 dependency for single-joint GPU actuator validation.
 * Migrated K1 orientation rewards and foot-height sensing to the MJLab 1.3 API while preserving observation dimensions.

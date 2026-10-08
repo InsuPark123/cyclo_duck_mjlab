@@ -1,8 +1,8 @@
 # Cyclo Duck MJCF
 
 Cyclo Duck CAD visuals and inertias on the MD **walking** skeleton. This is a
-robot asset and inspection scene; a Cyclo Duck RL task and BAM actuator are not
-registered yet.
+robot asset and inspection scene, with a fourteen-joint MJLab BAM configuration.
+A Cyclo Duck RL task is not registered yet.
 
 ## Model contract
 
@@ -31,11 +31,12 @@ registered yet.
   geometry is intentionally a reference proxy, not Cyclo's full visual mesh.
   Foot contact uses the MD runtime settings: `condim=3`, `priority=1`, sliding
   friction 1.0. This is not an all-body fall/standup collision model.
-- The reference XML position actuators, damping, friction and armature are
-  preserved for inspection/smoke tests. They are **not** the BAM M6 actuator
-  used by MD training. The training-time soft joint limit factor (0.9), BAM
-  voltage/delay settings and policy control loop belong in the later MJLab
-  integration. A static HOME pose or finite simulation is not a balance test.
+- The on-disk XML keeps the reference position actuators, damping, friction and
+  armature for direct inspection. `get_cyclo_duck_cfg()` converts the fourteen
+  actuators to BAM M6 motors in memory, replaces their armature with BAM's
+  reflected motor inertia, and lets BAM compute dry friction and damping each
+  step. It uses the MD soft joint limit factor (0.9), voltage and delay settings.
+  A static HOME pose or finite simulation is not a balance test.
 
 The scene uses a 0.005 s physics step. The robot-only XML supplies no floor and
 does not override the containing environment's timestep.
@@ -64,6 +65,7 @@ Hardware encoder direction, offsets and motor IDs remain uncalibrated.
 
 ## Files
 
+- `cyclo_duck.py`: MJLab robot configuration and required BAM events.
 - `cyclo_duck.xml`: robot-only MJCF, including HOME/STAND/INIT keyframes.
 - `scene.xml`: robot with a floor, lighting and a 0.005 s physics step.
 - `collision/`: MD walking contact meshes.
@@ -72,6 +74,61 @@ Hardware encoder direction, offsets and motor IDs remain uncalibrated.
 Load either XML directly with MuJoCo. Keep the repository/submodule layout
 intact: ordinary visual STL files are referenced directly from
 `third_party/cyclo_duck`, without copying them.
+
+## MJLab BAM integration
+
+When constructing a `ManagerBasedRlEnvCfg`, install both the robot and events:
+
+```python
+from source.assets.robots import get_cyclo_duck_cfg, get_cyclo_duck_bam_events
+
+cfg.scene.entities = {"robot": get_cyclo_duck_cfg()}
+cfg.events.update(get_cyclo_duck_bam_events())
+```
+
+The startup event declares `dof_frictionloss` and `dof_damping` for per-world
+expansion before simulation initialization. Omitting it makes multi-world BAM
+simulation invalid. When using `Scene`/`Simulation` directly, call
+`sim.expand_model_fields(("dof_frictionloss", "dof_damping"))` before stepping.
+The reset event independently samples a friction multiplier in 0.9–1.1 for
+each selected world, as in the MD walking configuration. It scales dry and
+load-dependent friction, not viscous damping, and does not compound on reset.
+
+All fourteen joints share one actuator group: XL330 M6, firmware gain 200,
+supply voltage 6.5–8.2 V, voltage-drop gain 0–0.2 V/Nm, minimum effective
+voltage 6 V, and command delay 3–6 physics steps. At the MD 5 ms timestep the
+delay is 15–30 ms. Supply voltage/drop gain are sampled at initialization and
+persist across resets. Voltage sag depends on the sum of all fourteen motor
+torques in each world. The existing CPU/GPU M6 friction difference is preserved;
+see `docs/bam_single_joint_validation.md` at the repository root.
+
+For subsequent walking-task integration, MD uses joint-position actions with
+scale 1.0 and the HOME offset, a 5 ms physics timestep, and decimation 4.
+These policy timing/action settings belong to the environment configuration;
+the asset configuration alone does not define rewards, observations or balance.
+`CYCLO_DUCK_JOINT_NAMES` documents the fourteen-joint model order. Get a fresh
+configuration with `get_cyclo_duck_cfg()` before changing parameters.
+
+### Integration check (2026-10-08)
+
+An eight-world GPU run used a flat floor, 5 ms physics, decimation 4, HOME
+targets and a 0.05 rad / 0.5 Hz head-yaw sine for two seconds. Checks confirmed:
+
+- Exactly fourteen motors with no residual XML position-controller bias.
+- Preserved body masses/inertias, hard joint limits and HOME joint angles;
+  total mass 0.684013385 kg and action dimension 14.
+- Per-world friction/damping fields, correct friction-scale broadcasting,
+  non-compounding partial-world friction updates, and reset torque clearing
+  while preserving sampled supply voltages/drop gains.
+- Finite states and torques; observed peak motor torque 0.27999 Nm and peak
+  joint speed 4.33926 rad/s.
+
+This was an open-loop integration check, not a balance test. Two worlds ended
+with the root below floor level (-0.0663 m and -0.0822 m), consistent with
+falling under the walking model's limited body collision geometry. Ground
+contact for the whole body and a trained balance policy are not established.
+The upstream CPU/GPU M6 formula discrepancy remains unchanged. Temporary
+validation code was kept outside the repository.
 
 ## Provenance
 
