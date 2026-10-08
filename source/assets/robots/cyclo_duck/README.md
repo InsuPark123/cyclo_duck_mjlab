@@ -2,7 +2,7 @@
 
 Cyclo Duck CAD visuals and inertias on the MD **walking** skeleton. This is a
 robot asset and inspection scene, with a fourteen-joint MJLab BAM configuration.
-A Cyclo Duck RL task is not registered yet.
+The flat walking task is registered as `Cyclo-Velocity-Flat-Duck-v0`.
 
 ## Model contract
 

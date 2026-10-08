@@ -33,6 +33,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(PROJECT_ROOT))
 
 import tyro
+from bam.mjlab import BamActuator
 
 from mjlab.envs import ManagerBasedRlEnv, ManagerBasedRlEnvCfg
 from mjlab.rl import MjlabOnPolicyRunner, RslRlBaseRunnerCfg, RslRlVecEnvWrapper
@@ -121,8 +122,17 @@ def run_train(task_id: str, cfg: TrainConfig, log_dir: Path) -> None:
 
   # Match Cyclo Lab: export sim2real.yaml once at the start of training.
   if rank == 0:
-    sim2real_cfg_path = export_sim2real_cfg(env, log_dir)
-    print(f"[INFO] Exported sim2real config: {sim2real_cfg_path}")
+    uses_bam = any(
+      isinstance(actuator, BamActuator)
+      for entity in env.scene.entities.values()
+      for actuator in entity.actuators
+    )
+    if uses_bam:
+      print("[INFO] BAM training: sim2real.yaml export is not supported by the "
+            "current PD deployment schema; env.yaml and agent.yaml are saved below.")
+    else:
+      sim2real_cfg_path = export_sim2real_cfg(env, log_dir)
+      print(f"[INFO] Exported sim2real config: {sim2real_cfg_path}")
 
   log_root_path = log_dir.parent  # Go up from specific run dir to experiment dir.
 

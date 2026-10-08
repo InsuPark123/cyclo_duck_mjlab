@@ -24,6 +24,11 @@
   and `source/tasks/velocity/mdp/cyclo_duck_observations.py` adapts MD
   `tasks/microduck_velocity_env_cfg.py` and `tasks/mdp.py` at the same revision,
   together with MJLab 1.3.0's base velocity observation layout (Apache-2.0).
+- The flat walking task configuration/PPO defaults under
+  `source/tasks/velocity/config/cyclo_duck/` and command/reward/curriculum
+  helpers in `source/tasks/velocity/mdp/cyclo_duck.py` also adapt those MD
+  task files at the same revision. See `docs/cyclo_duck_walking.md` for the
+  scope and documented differences.
 
 This project uses third-party open-source software and includes code adapted
 from third-party open-source projects.

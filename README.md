@@ -12,20 +12,21 @@
 [MJLab](https://github.com/mujocolab/mjlab) and
 [MuJoCo](https://mujoco.org/). It provides reinforcement learning environments,
 task configurations, and motion-processing tools for developing locomotion and
-motion-imitation policies for the ROBOTIS K1 humanoid robot.
+motion-imitation policies for the ROBOTIS K1 humanoid robot and walking policies
+for Cyclo Duck.
 
 The repository currently provides:
 
 - **Velocity**: flat-ground velocity-tracking locomotion
 - **Mimic**: Dance1 and Dance2 reference-motion tracking
-- Automatic generation of `params/sim2real.yaml` when training starts
+- Automatic generation of `params/sim2real.yaml` for the supported K1 PD tasks
 - Automatic export of `exported/policy.onnx` and `exported/policy.pt` during play
 
 > [!IMPORTANT]
 > This repository currently uses MJLab 1.3.0, MuJoCo 3.10.0, and Python 3.12.
 
-Cyclo Duck MJCF assets and a [14-joint BAM configuration](source/assets/robots/cyclo_duck/README.md)
-are available; its walking task is not yet registered. See the
+Cyclo Duck MJCF assets, a [14-joint BAM configuration](source/assets/robots/cyclo_duck/README.md),
+and the [flat walking task](docs/cyclo_duck_walking.md) are available. See the
 [policy input/output contract](docs/cyclo_duck_policy_io.md) for observation
 ordering, HOME-relative actions and control timing, and the
 [single-joint BAM validation report](docs/bam_single_joint_validation.md) for
@@ -112,6 +113,17 @@ The project source and `logs/` directory are shared with the host, so training
 results remain available after the container is removed.
 
 ## Try Examples
+
+### Cyclo Duck flat walking
+
+```bash
+python scripts/reinforcement_learning/train.py Cyclo-Velocity-Flat-Duck-v0 \
+  --env.scene.num-envs 32 --agent.max-iterations 10
+```
+
+This is a short training check, not a trained walking policy. Logs and checkpoints
+use `logs/rsl_rl/cyclo_duck_velocity/`. BAM training saves `env.yaml` and
+`agent.yaml`; the existing K1 PD `sim2real.yaml` schema does not describe BAM.
 
 ### Velocity
 

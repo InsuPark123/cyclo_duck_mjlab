@@ -3,9 +3,9 @@
 Author: Insu Park. Reference: MD walking configuration at
 `273afe0b31c4ab365b9ff806a927b63ac92b5ddd`, with MJLab 1.3.0.
 
-This stage defines observation/action ordering and timing. It does not register
-a walking task or add reward, termination, command-sampling or PPO settings.
-The existing K1 interface is unchanged.
+This module defines observation/action ordering and timing. The containing
+[walking task](cyclo_duck_walking.md) supplies reward, termination, command and
+PPO settings. The existing K1 interface is unchanged.
 
 ## Usage and dependencies
 
@@ -27,8 +27,8 @@ The containing task must supply:
 - Contact sensor `feet_ground_contact`, with found/force fields and air-time
   tracking, and terrain-height sensor `foot_height_scan`, both left foot first.
 
-The task's command distributions and sensor configuration will be integrated
-in the next stage. Missing dependencies produce MJLab configuration errors;
+The flat walking task now supplies these command and sensor dependencies.
+Missing dependencies produce MJLab configuration errors;
 there are no silent zero-command or fabricated-contact fallbacks.
 
 ## Actor: 61 inputs

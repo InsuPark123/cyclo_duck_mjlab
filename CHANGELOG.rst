@@ -4,6 +4,9 @@ Changelog for package cyclo_duck_mjlab
 
 Unreleased
 ----------
+* Registered ``Cyclo-Velocity-Flat-Duck-v0`` with MD walking commands, contact/height sensors, rewards, terminations, domain randomization, curricula and PPO defaults.
+* Matched reset height to the Cyclo HOME origin and bounded head-command curricula by the existing soft joint limits.
+* Kept K1 PD deployment export while allowing BAM training to save training configuration without emitting an incompatible ``sim2real.yaml``.
 * Defined the Cyclo Duck walking policy interface: 61 actor inputs, 76 critic inputs, fourteen HOME-relative actions, and 200 Hz physics / 50 Hz control.
 * Adapted MD actor observation noise, IMU mounting error, encoder bias, observation delays and finite-value handling for privileged foot sensors.
 * Added a fourteen-joint Cyclo Duck BAM M6 asset configuration with MD voltage, delay, HOME pose and soft-limit settings.
