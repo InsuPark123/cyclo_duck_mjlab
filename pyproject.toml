@@ -3,8 +3,8 @@ requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "cyclo_mjlab"
-version = "0.0.3"
+name = "cyclo_duck_mjlab"
+version = "0.1.0"
 requires-python = ">=3.11"
 dependencies = [
     "mjlab==1.2.0",

@@ -1,6 +1,17 @@
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Changelog for package cyclo_mjlab
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Changelog for package cyclo_duck_mjlab
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+0.1.0 (2026-10-08)
+------------------
+* Established ``cyclo_duck_mjlab`` as an independent package based on upstream 0.0.3, retaining the existing K1 training tasks.
+* Renamed the Python distribution from ``cyclo_mjlab`` to ``cyclo_duck_mjlab`` and moved the container workspace to ``/workspace/cyclo_duck_mjlab``. Updated installation instructions and Git-state export paths accordingly.
+* Isolated the ``cyclo_duck`` container, image and cache volumes from the original ``cyclo_mjlab`` environment.
+* Added the ``cyclo_duck`` submodule and updated it to ``d1151ac`` with the articulated Cyclo Duck CAD assets.
+* Added Cyclo Duck robot and scene MJCF assets with the MD walking model's 14-joint interface, fixed jaw, floating base, joint limits, initial poses, sensors and reference contact geometry.
+* Preserved Cyclo CAD visuals, mass and inertia, including the fixed jaw; re-encoded oversized visual meshes without reducing geometry. Documented source revisions and asset licenses.
+* The Cyclo Duck learning task and BAM actuator integration are not yet included.
+* Contributors: Insu Park
 
 0.0.3 (2026-09-18)
 ------------------

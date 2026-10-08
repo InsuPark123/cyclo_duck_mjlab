@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-PROJECT_PATH="${PROJECT_PATH:-/workspace/cyclo_mjlab}"
+PROJECT_PATH="${PROJECT_PATH:-/workspace/cyclo_duck_mjlab}"
 CONTAINER_USER="cyclo"
 CONTAINER_GROUP="$(id -gn "${CONTAINER_USER}")"
 CONTAINER_HOME="/home/${CONTAINER_USER}"

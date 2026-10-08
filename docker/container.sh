@@ -109,7 +109,7 @@ container_is_running() {
 verify_environment() {
   echo "[INFO] Verifying the Python and GPU environment..."
   docker exec --user cyclo \
-    --workdir /workspace/cyclo_mjlab \
+    --workdir /workspace/cyclo_duck_mjlab \
     "${CYCLO_DUCK_CONTAINER}" \
     python -c \
       'import importlib.metadata as md; import mujoco, torch, warp; assert torch.cuda.is_available(); mjlab_version = md.version("mjlab"); print(f"[INFO] Ready: torch={torch.__version__}, CUDA={torch.version.cuda}, GPU={torch.cuda.get_device_name(0)}, mjlab={mjlab_version}, mujoco={mujoco.__version__}, warp={warp.__version__}")'
@@ -137,7 +137,7 @@ enter_container() {
 
   exec docker exec -it \
     --user cyclo \
-    --workdir /workspace/cyclo_mjlab \
+    --workdir /workspace/cyclo_duck_mjlab \
     --env HOME=/home/cyclo \
     --env DISPLAY="${DISPLAY:-}" \
     "${CYCLO_DUCK_CONTAINER}" \

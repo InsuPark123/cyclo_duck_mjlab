@@ -7,7 +7,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 ARG HOST_UID=1000
 ARG HOST_GID=1000
-ARG PROJECT_PATH=/workspace/cyclo_mjlab
+ARG PROJECT_PATH=/workspace/cyclo_duck_mjlab
 
 ENV DEBIAN_FRONTEND=noninteractive \
     LANG=C.UTF-8 \
@@ -64,7 +64,7 @@ RUN existing_group="$(getent group "${HOST_GID}" | cut -d: -f1 || true)" \
 
 # Install third-party Python dependencies in a layer that only changes when
 # pyproject.toml changes. The source tree is copied and registered as editable below.
-WORKDIR /tmp/cyclo_mjlab_deps
+WORKDIR /tmp/cyclo_duck_mjlab_deps
 COPY pyproject.toml .
 RUN --mount=type=cache,target=/root/.cache/pip \
     PIP_CACHE_DIR=/root/.cache/pip \
@@ -81,7 +81,7 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 COPY docker/entrypoint.sh /usr/local/bin/cyclo-entrypoint
 RUN chmod +x /usr/local/bin/cyclo-entrypoint \
     && printf '%s\n' \
-      'export PROJECT_PATH=/workspace/cyclo_mjlab' \
+      'export PROJECT_PATH=${PROJECT_PATH:-/workspace/cyclo_duck_mjlab}' \
       'export MUJOCO_GL=${MUJOCO_GL:-egl}' \
       'cd "${PROJECT_PATH}"' \
       >> /home/cyclo/.bashrc \

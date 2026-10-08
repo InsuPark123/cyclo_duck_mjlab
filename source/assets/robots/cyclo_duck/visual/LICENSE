@@ -1,0 +1,5 @@
+Proprietary
+
+The imported URDF_ALPHA CAD export declared its license as Proprietary in its
+original package.xml. This asset integration preserves that declaration; it
+does not relicense the CAD models, meshes or accompanying export data.

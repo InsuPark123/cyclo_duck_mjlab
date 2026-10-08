@@ -1,5 +1,22 @@
 # Third-Party Licenses
 
+## Cyclo Duck MJCF assets
+
+- MD walking reference: Pollen Robotics, revision
+  `273afe0b31c4ab365b9ff806a927b63ac92b5ddd`.
+- Adapted robot/scene definitions and four reference collision meshes:
+  Apache-2.0, Copyright 2026 Pollen Robotics. Full original license:
+  `source/assets/robots/cyclo_duck/LICENSE.md-reference`.
+- Cyclo CAD visuals and inertial data: revision
+  `d1151ac4a12ce2067b774dae6c00f06eaebc5456`, assembly `Cyclo_Duck`.
+  These retain the original Proprietary declaration from
+  `third_party/cyclo_duck/cyclo_duck_description/Cyclo_Duck/LICENSE`.
+  Re-encoded MSH visuals retain that declaration in
+  `source/assets/robots/cyclo_duck/visual/LICENSE`.
+- See `source/assets/robots/cyclo_duck/README.md` for transformations, source
+  paths and the distinction between reference contact geometry
+  and Cyclo visual geometry.
+
 This project uses third-party open-source software and includes code adapted
 from third-party open-source projects.
 

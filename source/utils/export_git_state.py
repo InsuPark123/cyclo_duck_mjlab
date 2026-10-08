@@ -22,7 +22,7 @@ import subprocess
 
 _GIT_STATE_TXT_FILENAME = "git_state.txt"
 _GIT_DIFF_PATCH_FILENAME = "git_diff.patch"
-_CONTAINER_REPO_ROOT = "/workspace/cyclo_mjlab"
+_CONTAINER_REPO_ROOT = "/workspace/cyclo_duck_mjlab"
 
 
 def _run_git(repo_path: Path, *args: str) -> str:

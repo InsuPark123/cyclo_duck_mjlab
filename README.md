@@ -1,4 +1,4 @@
-# cyclo_mjlab
+# cyclo_duck_mjlab
 
 [![MuJoCo](https://img.shields.io/badge/MuJoCo-3.5.0-silver.svg)](https://mujoco.readthedocs.io/en/3.5.0/)
 [![MJLab](https://img.shields.io/badge/MJLab-1.2.0-silver.svg)](https://github.com/mujocolab/mjlab)
@@ -8,7 +8,7 @@
 
 ## Overview
 
-`cyclo_mjlab` is a research-oriented repository built on
+`cyclo_duck_mjlab` is based on [ROBOTIS cyclo_mjlab](https://github.com/ROBOTIS-GIT/cyclo_mjlab), built on
 [MJLab](https://github.com/mujocolab/mjlab) and
 [MuJoCo](https://mujoco.org/). It provides reinforcement learning environments,
 task configurations, and motion-processing tools for developing locomotion and
@@ -50,8 +50,8 @@ environment are not required.
 1. Clone the repository with its submodules:
 
    ```bash
-   git clone --recurse-submodules git@github.com:ROBOTIS-GIT/cyclo_mjlab.git
-   cd cyclo_mjlab
+   git clone --recurse-submodules git@github.com:InsuPark123/cyclo_duck_mjlab.git
+   cd cyclo_duck_mjlab
    ```
 
    If the repository was cloned without submodules, initialize them separately:
@@ -73,7 +73,9 @@ environment are not required.
    ```
 
 After entering the container, the training and playback commands below can be
-run directly from `/workspace/cyclo_mjlab`.
+run directly from `/workspace/cyclo_duck_mjlab`. This path mounts the host
+`cyclo_duck_mjlab` checkout. The Compose project uses its own pip and Warp cache
+volumes, separate from the original `cyclo_mjlab` environment.
 
 The default container name is `cyclo_duck`, the image is `cyclo-duck:latest`,
 and the Compose project name is `cyclo_duck_mjlab`. Override the container or
@@ -173,6 +175,15 @@ python scripts/tools/motion/csv_to_npz.py --help
 python scripts/tools/motion/replay_npz.py --help
 ```
 
+## Cyclo Duck MJCF
+
+The Cyclo Duck model uses Cyclo CAD visuals/inertias and the MD walking model's
+14-joint interface, fixed jaw, floating base, joint limits, HOME pose and sensors.
+The robot and scene XML files are in `source/assets/robots/cyclo_duck/`.
+See the [asset documentation](source/assets/robots/cyclo_duck/README.md) for
+model details and source provenance. The Cyclo Duck RL task and BAM training
+actuator are not registered yet.
+
 ## License
 
 This repository is licensed under the
@@ -186,3 +197,6 @@ This repository is licensed under the
   [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md)
 - **ROBOTIS AI Sapiens K1 Rev.1 assets**: Apache License 2.0; see
   [LICENSE.ai_sapiens](source/assets/robots/robotis_k1/LICENSE.ai_sapiens)
+- **Cyclo Duck / MD model assets**: CAD-derived assets retain their original
+  Proprietary declaration; MD adaptations and reference collision meshes are
+  Apache-2.0. See [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md).
