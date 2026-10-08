@@ -8,8 +8,8 @@ COMPOSE_FILE="${DOCKER_DIR}/compose.yaml"
 
 export HOST_UID="${HOST_UID:-$(id -u)}"
 export HOST_GID="${HOST_GID:-$(id -g)}"
-export CYCLO_MJLAB_IMAGE="${CYCLO_MJLAB_IMAGE:-cyclo-mjlab:latest}"
-export CYCLO_MJLAB_CONTAINER="${CYCLO_MJLAB_CONTAINER:-cyclo_mjlab}"
+export CYCLO_DUCK_IMAGE="${CYCLO_DUCK_IMAGE:-cyclo-duck:latest}"
+export CYCLO_DUCK_CONTAINER="${CYCLO_DUCK_CONTAINER:-cyclo_duck}"
 
 COMPOSE=()
 
@@ -92,25 +92,25 @@ compose() {
 }
 
 build_image() {
-  echo "[INFO] Building ${CYCLO_MJLAB_IMAGE}..."
-  compose build cyclo_mjlab
+  echo "[INFO] Building ${CYCLO_DUCK_IMAGE}..."
+  compose build cyclo_duck
 }
 
 rebuild_image() {
-  echo "[INFO] Rebuilding ${CYCLO_MJLAB_IMAGE} without cache..."
-  compose build --pull --no-cache cyclo_mjlab
+  echo "[INFO] Rebuilding ${CYCLO_DUCK_IMAGE} without cache..."
+  compose build --pull --no-cache cyclo_duck
 }
 
 container_is_running() {
   [[ "$(docker inspect -f '{{.State.Running}}' \
-    "${CYCLO_MJLAB_CONTAINER}" 2>/dev/null || true)" == "true" ]]
+    "${CYCLO_DUCK_CONTAINER}" 2>/dev/null || true)" == "true" ]]
 }
 
 verify_environment() {
   echo "[INFO] Verifying the Python and GPU environment..."
   docker exec --user cyclo \
     --workdir /workspace/cyclo_mjlab \
-    "${CYCLO_MJLAB_CONTAINER}" \
+    "${CYCLO_DUCK_CONTAINER}" \
     python -c \
       'import importlib.metadata as md; import mujoco, torch, warp; assert torch.cuda.is_available(); mjlab_version = md.version("mjlab"); print(f"[INFO] Ready: torch={torch.__version__}, CUDA={torch.version.cuda}, GPU={torch.cuda.get_device_name(0)}, mjlab={mjlab_version}, mujoco={mujoco.__version__}, warp={warp.__version__}")'
 }
@@ -119,12 +119,12 @@ start_container() {
   initialize_submodules
   prepare_host_directories
 
-  if ! docker image inspect "${CYCLO_MJLAB_IMAGE}" >/dev/null 2>&1; then
+  if ! docker image inspect "${CYCLO_DUCK_IMAGE}" >/dev/null 2>&1; then
     build_image
   fi
 
-  echo "[INFO] Starting ${CYCLO_MJLAB_CONTAINER}..."
-  compose up -d --no-build cyclo_mjlab
+  echo "[INFO] Starting ${CYCLO_DUCK_CONTAINER}..."
+  compose up -d --no-build cyclo_duck
   verify_environment
   echo "[INFO] Enter with: ./docker/container.sh enter"
 }
@@ -140,25 +140,25 @@ enter_container() {
     --workdir /workspace/cyclo_mjlab \
     --env HOME=/home/cyclo \
     --env DISPLAY="${DISPLAY:-}" \
-    "${CYCLO_MJLAB_CONTAINER}" \
+    "${CYCLO_DUCK_CONTAINER}" \
     bash
 }
 
 stop_container() {
-  compose stop cyclo_mjlab
+  compose stop cyclo_duck
 }
 
 show_status() {
-  compose ps cyclo_mjlab
+  compose ps cyclo_duck
 }
 
 show_logs() {
-  compose logs --follow cyclo_mjlab
+  compose logs --follow cyclo_duck
 }
 
 clean_resources() {
   read -r -p \
-    "Remove container '${CYCLO_MJLAB_CONTAINER}' and image '${CYCLO_MJLAB_IMAGE}'? [y/N] " \
+    "Remove container '${CYCLO_DUCK_CONTAINER}' and image '${CYCLO_DUCK_IMAGE}'? [y/N] " \
     reply
   if [[ ! "${reply}" =~ ^[Yy]$ ]]; then
     echo "[INFO] Clean cancelled."
@@ -166,7 +166,7 @@ clean_resources() {
   fi
 
   compose down --remove-orphans
-  docker image rm "${CYCLO_MJLAB_IMAGE}" 2>/dev/null || true
+  docker image rm "${CYCLO_DUCK_IMAGE}" 2>/dev/null || true
   echo "[INFO] Named pip/Warp cache volumes were preserved."
 }
 

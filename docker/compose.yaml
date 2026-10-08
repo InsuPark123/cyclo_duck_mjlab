@@ -1,9 +1,9 @@
-name: cyclo_mjlab
+name: cyclo_duck_mjlab
 
 services:
-  cyclo_mjlab:
-    image: ${CYCLO_MJLAB_IMAGE:-cyclo-mjlab:latest}
-    container_name: ${CYCLO_MJLAB_CONTAINER:-cyclo_mjlab}
+  cyclo_duck:
+    image: ${CYCLO_DUCK_IMAGE:-cyclo-duck:latest}
+    container_name: ${CYCLO_DUCK_CONTAINER:-cyclo_duck}
     build:
       context: ..
       dockerfile: docker/Dockerfile

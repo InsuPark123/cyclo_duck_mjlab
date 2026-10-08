@@ -75,6 +75,10 @@ environment are not required.
 After entering the container, the training and playback commands below can be
 run directly from `/workspace/cyclo_mjlab`.
 
+The default container name is `cyclo_duck`, the image is `cyclo-duck:latest`,
+and the Compose project name is `cyclo_duck_mjlab`. Override the container or
+image with `CYCLO_DUCK_CONTAINER` or `CYCLO_DUCK_IMAGE`, respectively.
+
 ### Docker commands
 
 | Command | Description |
