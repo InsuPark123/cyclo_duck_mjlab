@@ -260,8 +260,19 @@ def export_sim2real_cfg(
   log_dir: str | Path,
   *,
   observation_group: str = "actor",
+  clip_actions: float | None = None,
 ) -> Path:
   """Write ``params/sim2real.yaml`` from the resolved environment."""
+  from .export_bam_policy import (
+    build_bam_policy_contract, uses_bam, write_bam_policy_contract,
+  )
+
+  if uses_bam(env):
+    contract = build_bam_policy_contract(
+      env, observation_group=observation_group, clip_actions=clip_actions,
+    )
+    return write_bam_policy_contract(contract, Path(log_dir) / "params" / "sim2real.yaml")
+
   action = _position_action(env)
   robot = env.scene[action.cfg.entity_name]
   if not isinstance(robot, Entity):

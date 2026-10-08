@@ -118,11 +118,11 @@ is cleared for reset worlds; MJLab resets the action history itself.
    for recipe parity and should be revisited during Cyclo-specific tuning.
 4. **Viewer arrows:** use standard MJLab command visualization; the MD custom
    arrow-only renderer is not copied. This does not change command samples.
-5. **Deployment export:** the existing `sim2real.yaml` schema requires physical
-   PD gains and K1-style command/observation names. BAM is not represented by
-   those gains. Training explicitly skips that export for BAM and still saves
-   `params/env.yaml` and `params/agent.yaml`. K1 PD export is unchanged. A BAM
-   hardware deployment schema and motor calibration remain separate work.
+5. **Deployment export:** BAM uses [schema version 2](bam_policy_export.md),
+   with separate firmware gain/model parameters and unverified hardware fields.
+   Training saves `params/sim2real.yaml`; policy export writes a matching YAML
+   beside the networks and embeds the contract/hash in ONNX. K1 PD export is
+   unchanged. Hardware runtime integration and motor calibration remain separate.
 6. **BAM and collision scope:** the previously measured upstream CPU/GPU M6
    friction discrepancy is retained. Walking collision proxies are not a full
    body-on-ground recovery model. No hardware execution or long-run locomotion
@@ -145,8 +145,9 @@ heights were 0.12112–0.12895 m. Checks covered:
 The repository's `run_train()` then completed one PPO iteration with eight
 worlds and 24 rollout steps using the configured five epochs/four minibatches.
 Mean value loss was 0.0232, surrogate loss -0.0590 and entropy loss 19.8551.
-`model_0.pt`, `params/env.yaml` and `params/agent.yaml` were saved. No
-`sim2real.yaml` was emitted for BAM. K1 task registrations remained available.
+`model_0.pt`, `params/env.yaml` and `params/agent.yaml` were saved. This initial
+task check preceded BAM export support. The subsequent export checks are
+documented separately in `bam_policy_export.md`. K1 task registrations remained available.
 
 Temporary validation scripts and training artifacts were kept outside the
 repository. This confirms integration and one learning update, not convergence,

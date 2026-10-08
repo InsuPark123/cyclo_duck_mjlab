@@ -19,7 +19,7 @@ The repository currently provides:
 
 - **Velocity**: flat-ground velocity-tracking locomotion
 - **Mimic**: Dance1 and Dance2 reference-motion tracking
-- Automatic generation of `params/sim2real.yaml` for the supported K1 PD tasks
+- Automatic generation of `params/sim2real.yaml` (legacy K1 PD or versioned BAM schema)
 - Automatic export of `exported/policy.onnx` and `exported/policy.pt` during play
 
 > [!IMPORTANT]
@@ -122,8 +122,20 @@ python scripts/reinforcement_learning/train.py Cyclo-Velocity-Flat-Duck-v0 \
 ```
 
 This is a short training check, not a trained walking policy. Logs and checkpoints
-use `logs/rsl_rl/cyclo_duck_velocity/`. BAM training saves `env.yaml` and
-`agent.yaml`; the existing K1 PD `sim2real.yaml` schema does not describe BAM.
+use `logs/rsl_rl/cyclo_duck_velocity/`. BAM training saves `env.yaml`,
+`agent.yaml` and a [versioned BAM `sim2real.yaml`](docs/bam_policy_export.md).
+Hardware mappings remain unverified until separately calibrated.
+
+Export a checkpoint without opening a viewer:
+
+```bash
+python scripts/reinforcement_learning/play.py Cyclo-Velocity-Flat-Duck-v0 \
+  --checkpoint-file logs/rsl_rl/cyclo_duck_velocity/<run>/model_<iteration>.pt \
+  --num-envs 1 --export-only
+```
+
+The `exported/` directory contains `policy.onnx`, `policy.pt` and `sim2real.yaml`.
+BAM ONNX metadata embeds the same versioned contract and its checksum.
 
 ### Velocity
 
@@ -202,8 +214,8 @@ The Cyclo Duck model uses Cyclo CAD visuals/inertias and the MD walking model's
 14-joint interface, fixed jaw, floating base, joint limits, HOME pose and sensors.
 The robot and scene XML files are in `source/assets/robots/cyclo_duck/`.
 See the [asset documentation](source/assets/robots/cyclo_duck/README.md) for
-model details and source provenance. The Cyclo Duck RL task and BAM training
-actuator are not registered yet.
+model details and source provenance. The BAM walking task is registered as
+`Cyclo-Velocity-Flat-Duck-v0`.
 
 ## License
 

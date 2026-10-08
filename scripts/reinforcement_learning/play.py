@@ -43,6 +43,9 @@ from mjlab.utils.wrappers import VideoRecorder
 from mjlab.viewer import NativeMujocoViewer, ViserPlayViewer
 
 from source.tasks.mimic.mdp import ReferenceTrajectoryCommandCfg
+from source.utils.export_bam_policy import (
+  bam_onnx_metadata, build_bam_policy_contract, uses_bam, write_bam_policy_contract,
+)
 
 
 @dataclass(frozen=True)
@@ -435,7 +438,14 @@ def run_play(task_id: str, cfg: PlayConfig):
       jit_path = export_model_dir / "policy.pt"
       runner.export_policy_to_onnx(str(export_model_dir), onnx_path.name)
       runner.export_policy_to_jit(str(export_model_dir), jit_path.name)
-      metadata = get_base_metadata(manager_env, log_dir.name)
+      if uses_bam(manager_env):
+        contract = build_bam_policy_contract(
+          manager_env, clip_actions=agent_cfg.clip_actions,
+        )
+        write_bam_policy_contract(contract, export_model_dir / "sim2real.yaml")
+        metadata = bam_onnx_metadata(contract, log_dir.name)
+      else:
+        metadata = get_base_metadata(manager_env, log_dir.name)
       attach_metadata_to_onnx(str(onnx_path), metadata)
       print(f"[INFO] Exported ONNX policy: {onnx_path}")
       print(f"[INFO] Exported TorchScript policy: {jit_path}")
