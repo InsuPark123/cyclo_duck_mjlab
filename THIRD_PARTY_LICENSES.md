@@ -20,6 +20,10 @@
   and friction-scaling/event integration in `source/actuators/bam.py` adapt MD
   `robot/microduck_constants.py`, `actuator/friction_dr_bam.py` and `tasks/mdp.py`
   at the same revision, under Apache-2.0, Copyright 2026 Pollen Robotics.
+- The policy interface in `source/tasks/velocity/config/cyclo_duck/policy_io.py`
+  and `source/tasks/velocity/mdp/cyclo_duck_observations.py` adapts MD
+  `tasks/microduck_velocity_env_cfg.py` and `tasks/mdp.py` at the same revision,
+  together with MJLab 1.3.0's base velocity observation layout (Apache-2.0).
 
 This project uses third-party open-source software and includes code adapted
 from third-party open-source projects.

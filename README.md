@@ -26,6 +26,8 @@ The repository currently provides:
 
 Cyclo Duck MJCF assets and a [14-joint BAM configuration](source/assets/robots/cyclo_duck/README.md)
 are available; its walking task is not yet registered. See the
+[policy input/output contract](docs/cyclo_duck_policy_io.md) for observation
+ordering, HOME-relative actions and control timing, and the
 [single-joint BAM validation report](docs/bam_single_joint_validation.md) for
 the aligned runtime, measured results and the known upstream M6 friction difference.
 
