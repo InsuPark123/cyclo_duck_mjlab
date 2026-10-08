@@ -2,6 +2,14 @@
 Changelog for package cyclo_duck_mjlab
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Unreleased
+----------
+* Aligned the simulation environment with the MD reference: Python 3.12, MJLab 1.3.0, MuJoCo 3.10.0, MuJoCo Warp 3.8.1, Warp 1.12.0, PyTorch 2.9.1 and RSL-RL 5.0.1.
+* Added the pinned BAM XL330 M6 dependency for single-joint GPU actuator validation.
+* Migrated K1 orientation rewards and foot-height sensing to the MJLab 1.3 API while preserving observation dimensions.
+* Documented loaded-arm CPU/GPU, voltage, delay and reset validation, including an upstream M6 friction-formula discrepancy.
+* Contributors: Insu Park
+
 0.1.0 (2026-10-08)
 ------------------
 * Established ``cyclo_duck_mjlab`` as an independent package based on upstream 0.0.3, retaining the existing K1 training tasks.

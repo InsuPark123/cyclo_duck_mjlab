@@ -74,7 +74,7 @@ def make_locomotion_velocity_env_cfg() -> ManagerBasedRlEnvCfg:
   critic_observation_terms = {
     **actor_observation_terms,
     "base_lin_vel": ObservationTermCfg(func=mdp.builtin_sensor, params={"sensor_name": "robot/imu_lin_vel"}, noise=Unoise(n_min=-0.5, n_max=0.5)),
-    "foot_height": ObservationTermCfg(func=mdp.foot_height, params={"asset_cfg": SceneEntityCfg("robot", site_names=())}),  # Set per-robot.
+    "foot_height": ObservationTermCfg(func=mdp.foot_height, params={"sensor_name": "foot_height_scan"}),
     "foot_air_time": ObservationTermCfg(func=mdp.foot_air_time, params={"sensor_name": "feet_ground_contact"}),
     "foot_contact": ObservationTermCfg(func=mdp.foot_contact, params={"sensor_name": "feet_ground_contact"}),
     "foot_contact_forces": ObservationTermCfg(func=mdp.foot_contact_forces, params={"sensor_name": "feet_ground_contact"}),
@@ -203,7 +203,7 @@ def make_locomotion_velocity_env_cfg() -> ManagerBasedRlEnvCfg:
       params={"command_name": "base_velocity", "std": math.sqrt(0.5)},
     ),
     "upright": RewardTermCfg(
-      func=mdp.flat_orientation,
+      func=mdp.upright,
       weight=1.0,
       params={
         "std": math.sqrt(0.2),
@@ -240,6 +240,7 @@ def make_locomotion_velocity_env_cfg() -> ManagerBasedRlEnvCfg:
       weight=-2.0,
       params={
         "target_height": 0.10,
+        "height_sensor_name": "foot_height_scan",
         "command_name": "base_velocity",
         "command_threshold": 0.05,
         "asset_cfg": SceneEntityCfg("robot", site_names=()),  # Set per-robot.

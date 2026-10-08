@@ -23,7 +23,7 @@ from third-party open-source projects.
 ## mujocolab/mjlab
 
 - Source: https://github.com/mujocolab/mjlab
-- Version: 1.2.0
+- Version: 1.3.0
 - License: Apache-2.0
 - Used as: The core simulation and reinforcement-learning framework
 
@@ -66,3 +66,16 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
+
+## Rhoban/bam
+
+- Source: https://github.com/Rhoban/bam
+- Revision: `62bd8ce12154340be97e06f7f41a0ca8f116d967`
+- License: Apache-2.0
+- Copyright 2025 Marc Duclusaud & Grégoire Passault
+- Used as: XL330 M6 actuator model and MJLab GPU actuator integration.
+
+Only BAM's base package is installed. Hardware/identification extras are not
+required for simulation. The simulation versions are pinned directly in
+`pyproject.toml` to match the MD reference, rather than installing BAM's
+`mjlab` extra (which declares a different MuJoCo version range).

@@ -1,8 +1,8 @@
 # cyclo_duck_mjlab
 
-[![MuJoCo](https://img.shields.io/badge/MuJoCo-3.5.0-silver.svg)](https://mujoco.readthedocs.io/en/3.5.0/)
-[![MJLab](https://img.shields.io/badge/MJLab-1.2.0-silver.svg)](https://github.com/mujocolab/mjlab)
-[![Python](https://img.shields.io/badge/python-3.11-blue.svg)](https://docs.python.org/3/whatsnew/3.11.html)
+[![MuJoCo](https://img.shields.io/badge/MuJoCo-3.10.0-silver.svg)](https://mujoco.readthedocs.io/en/3.10.0/)
+[![MJLab](https://img.shields.io/badge/MJLab-1.3.0-silver.svg)](https://github.com/mujocolab/mjlab)
+[![Python](https://img.shields.io/badge/python-3.12-blue.svg)](https://docs.python.org/3/whatsnew/3.12.html)
 [![Linux platform](https://img.shields.io/badge/platform-linux--64-orange.svg)](https://releases.ubuntu.com/22.04/)
 [![License](https://img.shields.io/badge/license-Apache2.0-yellow.svg)](https://opensource.org/license/apache-2-0)
 
@@ -22,7 +22,11 @@ The repository currently provides:
 - Automatic export of `exported/policy.onnx` and `exported/policy.pt` during play
 
 > [!IMPORTANT]
-> This repository currently uses MJLab 1.2.0, MuJoCo 3.5.0, and Python 3.11.
+> This repository currently uses MJLab 1.3.0, MuJoCo 3.10.0, and Python 3.12.
+
+Cyclo Duck MJCF assets are available, but its walking task and 14-joint BAM
+integration are not yet connected. See the [single-joint BAM validation report](docs/bam_single_joint_validation.md)
+for the aligned runtime, measured results and the known upstream M6 friction difference.
 
 ### Locomotion
 
@@ -93,9 +97,11 @@ image with `CYCLO_DUCK_CONTAINER` or `CYCLO_DUCK_IMAGE`, respectively.
 
 The Docker image includes:
 
-- Python 3.11
-- MJLab 1.2.0
-- MuJoCo and MuJoCo Warp 3.5.0
+- Python 3.12
+- MJLab 1.3.0
+- MuJoCo 3.10.0 and MuJoCo Warp 3.8.1
+- PyTorch 2.9.1 and RSL-RL 5.0.1
+- BAM M6 from the pinned Rhoban revision in `pyproject.toml`
 - Warp 1.12.0
 - All dependencies declared in `pyproject.toml`
 

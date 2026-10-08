@@ -30,7 +30,13 @@ from mjlab.envs import ManagerBasedRlEnvCfg
 from mjlab.envs.mdp.actions import JointPositionActionCfg
 from mjlab.managers.reward_manager import RewardTermCfg
 from mjlab.managers.scene_entity_config import SceneEntityCfg
-from mjlab.sensor import ContactMatch, ContactSensorCfg
+from mjlab.sensor import (
+  ContactMatch,
+  ContactSensorCfg,
+  ObjRef,
+  RingPatternCfg,
+  TerrainHeightSensorCfg,
+)
 from mjlab.tasks.velocity.mdp import UniformVelocityCommandCfg
 
 import source.tasks.velocity.mdp as mdp
@@ -72,9 +78,23 @@ def cyclo_k1_rev1_flat_env_cfg(play: bool = False) -> ManagerBasedRlEnvCfg:
     num_slots=1,
     history_length=4,
   )
+  foot_height_scan_cfg = TerrainHeightSensorCfg(
+    name="foot_height_scan",
+    frame=tuple(
+      ObjRef(type="site", name=name, entity="robot")
+      for name in K1_REV1_FOOT_SITE_NAMES
+    ),
+    pattern=RingPatternCfg.single_ring(radius=0.04, num_samples=2),
+    ray_alignment="yaw",
+    max_distance=1.0,
+    exclude_parent_body=True,
+    include_geom_groups=(0,),
+    debug_vis=False,
+  )
   env_cfg.scene.sensors = (env_cfg.scene.sensors or ()) + (
     feet_contact_sensor_cfg,
     self_contact_sensor_cfg,
+    foot_height_scan_cfg,
   )
 
   joint_position_action_cfg = env_cfg.actions["joint_pos"]
@@ -86,10 +106,6 @@ def cyclo_k1_rev1_flat_env_cfg(play: bool = False) -> ManagerBasedRlEnvCfg:
   velocity_command_cfg = env_cfg.commands["base_velocity"]
   assert isinstance(velocity_command_cfg, UniformVelocityCommandCfg)
   velocity_command_cfg.viz.z_offset = 1.1
-
-  env_cfg.observations["critic"].terms["foot_height"].params[
-    "asset_cfg"
-  ].site_names = K1_REV1_FOOT_SITE_NAMES
 
   env_cfg.events["foot_friction"].params[
     "asset_cfg"
