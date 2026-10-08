@@ -1,3 +1,6 @@
 [submodule "third_party/ai_sapiens"]
 	path = third_party/ai_sapiens
 	url = https://github.com/ROBOTIS-GIT/ai_sapiens.git
+[submodule "third_party/cyclo_duck"]
+	path = third_party/cyclo_duck
+	url = https://github.com/InsuPark123/cyclo_duck.git
